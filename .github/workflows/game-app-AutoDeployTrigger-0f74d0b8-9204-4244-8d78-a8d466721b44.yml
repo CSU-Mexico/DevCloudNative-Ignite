@@ -1,0 +1,60 @@
+name: Trigger auto deployment for game-app
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/game-app-AutoDeployTrigger-0f74d0b8-9204-4244-8d78-a8d466721b44.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:      
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to container registry
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ secrets.GAMEAPP_REGISTRY_USERNAME }}
+          password: ${{ secrets.GAMEAPP_REGISTRY_PASSWORD }}
+
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: docker.pkg.github.com/docker.pkg.github.com/erramire/github-actions-continuous-delivery-azure/erramire-azure-ttt:${{ github.sha }}
+          file: ./Dockerfile
+          context: ./
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.GAMEAPP_AZURE_CREDENTIALS }}
+
+
+      - name: Deploy to containerapp
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            az containerapp registry set -n game-app -g dev-journey-build-actions --server docker.pkg.github.com --username  ${{ secrets.GAMEAPP_REGISTRY_USERNAME }} --password ${{ secrets.GAMEAPP_REGISTRY_PASSWORD }}
+            az containerapp update -n game-app -g dev-journey-build-actions --image docker.pkg.github.com/docker.pkg.github.com/erramire/github-actions-continuous-delivery-azure/erramire-azure-ttt:${{ github.sha }}

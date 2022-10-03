@@ -1,0 +1,156 @@
+#spanFab {
+  display: none;
+}
+
+#pwaInstallButton {
+  position: fixed;
+  z-index: -1;
+  top: 18px;
+  right: 6em;
+}
+
+pwa-install {
+  --install-button-color: var(--ion-color-primary) !important;
+}
+
+pwa-auth {
+  position: absolute;
+  right: 5em;
+  top: 14px;
+}
+
+pwa-auth::part(signInButton) {
+  background: var(--ion-color-primary);
+  color: white;
+  padding: 10px;
+  text-transform: uppercase;
+  border-radius: 22px;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+#signInText {
+  color: var(--ion-color-primary);
+  margin-right: 2em;
+  font-weight: bold;
+}
+
+#mobileInstallButton {
+  position: fixed;
+  bottom: 4px;
+  right: 8px;
+  background: #d3d3d3a6;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  z-index: -1;
+}
+
+#settingsButton {
+  font-size: 18px;
+}
+
+.settingsPopover .popover-content {
+  border-radius: 14px !important;
+}
+
+#settingsBlock {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: white;
+  border-radius: 24px;
+  z-index: -1;
+}
+
+.login-button {
+  border-radius: 24px;
+}
+
+#fileNameDiv {
+  z-index: 9999;
+  position: fixed;
+  width: 100%;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+app-canvas {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -2;
+}
+
+@media (max-width: 500px) {
+  #fileNameDiv {
+    display: none;
+  }
+
+  #settingsButton {
+    display: none;
+  }
+
+  pwa-auth {
+    display: none;
+  }
+}
+
+#fileNameDiv span {
+  background: #1976d25e;
+  color: white;
+  font-size: 18px;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 22px;
+  margin-top: 10px;
+  backdrop-filter: blur(10px);
+  animation-name: slidedown;
+  animation-duration: 300ms;
+}
+
+@keyframes slidedown {
+  from {
+    opacity: 0.6;
+    transform: translateY(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 1200px) {
+  .imagesModal {
+    --width: 56em !important;
+  }
+}
+
+@media (horizontal-viewport-segments: 2) {
+  #spanFab {
+    display: initial;
+  }
+
+   #fileNameDiv {
+    width: 50%;
+  }
+}
+
+@media(screen-spanning: single-fold-vertical) {
+  #spanFab {
+    display: initial;
+  }
+
+   #fileNameDiv {
+    width: 50%;
+  }
+}

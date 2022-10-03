@@ -1,0 +1,144 @@
+#gridCanvas {
+  pointer-events: none;
+  z-index: 9999;
+}
+
+#devicesButton {
+  position: fixed;
+  z-index: 9999999;
+  left: 16px;
+  top: 293px;
+  height: 53px;
+  width: 53px;
+}
+
+#secondCanvas {
+  pointer-events: none;
+  z-index: 1;
+}
+
+#inkToShapeButton {
+  position: fixed;
+  top: 2em;
+  left: 8em;
+  background: var(--ion-color-primary);
+  color: white;
+  font-weight: bold;
+  border-radius: 26px;
+  height: 34px;
+  padding-left: 16px;
+  padding-right: 16px;
+  cursor: pointer;
+  z-index: 1;
+  box-shadow: 0px 0px 14px 4px var(--ion-color-primary);
+}
+
+#endButton {
+  z-index: 9999;
+  position: fixed;
+  top: 14px;
+  left: 15.6em;
+}
+
+#inviteButton {
+  z-index: 9999;
+  position: fixed;
+  top: 14px;
+  left: 6em;
+}
+
+@media (max-width: 500px) {
+  #endButton {
+    right: 16px;
+  }
+
+  #inviteButton {
+    right: 14.4em;
+  }
+}
+
+#inkToShapeButtonOff {
+  position: fixed;
+  top: 2em;
+  left: 8em;
+  background: var(--ion-color-danger);
+  color: white;
+  font-weight: bold;
+  border-radius: 26px;
+  height: 34px;
+  padding-left: 16px;
+  padding-right: 16px;
+  cursor: pointer;
+  z-index: 1;
+  box-shadow: 0px 0px 14px 4px var(--ion-color-danger);
+}
+
+@media(max-width: 600px) {
+  #inkToShapeButton {
+    display: none;
+  }
+  #inkToShapeButtonOff {
+    display: none;
+  }
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  touch-action: none;
+}
+
+#copyTextButton {
+  z-index: -1;
+  position: fixed;
+  bottom: 8px;
+  right: 20px;
+  background: black;
+  color: white;
+  border-radius: 20px;
+  padding-left: 18px;
+  padding-right: 18px;
+  box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.37);
+  height: 34px;
+  width: 96px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+
+#customContextMenu {
+  z-index: 9999;
+  position: absolute;
+  background: white;
+  opacity: 0;
+  box-shadow: 0 0 14px 1px #00000075;
+  border-radius: 3px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+#customContextMenu button {
+  background: none;
+  font-weight: bold;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+#customContextMenu button ion-icon {
+  width: 1.6em;
+  height: 1.6em;
+  margin-right: 8px;
+}
+
+#customContextMenu button:hover {
+  background: #80808045;
+}

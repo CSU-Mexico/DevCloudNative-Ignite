@@ -1,0 +1,76 @@
+name: Configure Azure environment
+
+on: 
+  pull_request:
+    types: [labeled]
+
+env:
+  AZURE_RESOURCE_GROUP: dev-journey-build-actions
+  AZURE_CONTAINERAPPS_ENVIRONMENT: dev-journey-build-containerenv
+  AZURE_LOCATION: '"East US 2"'
+  AZURE_CONTAINERAPPS_NAME: "game-app"
+  AZURE_CONTAINERAPPS_NAME_STG: "game-app-staging"
+
+jobs:
+  setup-up-azure-resources:
+    runs-on: ubuntu-latest
+
+    if: contains(github.event.pull_request.labels.*.name, 'spin up environment')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Configuring extensions 
+        if: success()
+        run: | 
+          az extension add --name containerapp --upgrade
+          az provider register --namespace Microsoft.App
+          az provider register --namespace Microsoft.OperationalInsights
+
+      - name: Create Azure resource group
+        if: success()
+        run: |
+          az group create --location ${{env.AZURE_LOCATION}} --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}}
+
+      - name: Create Azure Container Environment
+        if: success()
+        run: |
+          az containerapp env create --name ${{env.AZURE_CONTAINERAPPS_ENVIRONMENT}} --resource-group ${{env.AZURE_RESOURCE_GROUP}} --location ${{env.AZURE_LOCATION}} --logs-workspace-id ${{secrets.WS_ID}} --logs-workspace-key ${{secrets.WS_KEY}}                
+      
+      - name: Create Azure Container App
+        if: success()
+        run: |
+          az containerapp create --name ${{env.AZURE_CONTAINERAPPS_NAME}} --resource-group ${{env.AZURE_RESOURCE_GROUP}} --environment ${{env.AZURE_CONTAINERAPPS_ENVIRONMENT}} --image mcr.microsoft.com/azuredocs/containerapps-helloworld:latest --target-port 80 --ingress 'external' --query properties.configuration.ingress.fqdn --cpu 2 --memory 4.0Gi
+          az containerapp create --name ${{env.AZURE_CONTAINERAPPS_NAME_STG}} --resource-group ${{env.AZURE_RESOURCE_GROUP}} --environment ${{env.AZURE_CONTAINERAPPS_ENVIRONMENT}} --image mcr.microsoft.com/azuredocs/containerapps-helloworld:latest --target-port 80 --ingress 'external' --query properties.configuration.ingress.fqdn --cpu 1 --memory 2.0Gi
+      
+      - name: Set Github Container Registry
+        if: success()
+        run: |
+          az config set extension.use_dynamic_install=yes_without_prompt
+          az containerapp registry set -n ${{env.AZURE_CONTAINERAPPS_NAME}} -g ${{env.AZURE_RESOURCE_GROUP}} --server docker.pkg.github.com --username  ${{ secrets.GH_USER }} --password ${{ secrets.GH_PAT }}          
+          az containerapp registry set -n ${{env.AZURE_CONTAINERAPPS_NAME_STG}} -g ${{env.AZURE_RESOURCE_GROUP}} --server docker.pkg.github.com --username  ${{ secrets.GH_USER }} --password ${{ secrets.GH_PAT }}                    
+  
+  destroy-azure-resources:
+    runs-on: ubuntu-latest
+
+    if: contains(github.event.pull_request.labels.*.name, 'destroy environment')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Destroy Azure environment
+        if: success()
+        run: |
+          az group delete --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}} --yes
