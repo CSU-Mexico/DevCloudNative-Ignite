@@ -39,8 +39,8 @@ jobs:
           username: ${{ secrets.ACR_USER }}
           password: ${{ secrets.ACR_PWD }}
       - run: |
-            docker build . -t ${{ env.IMAGE_REGISTRY_URL }}/${{ github.repository }}/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}
-            docker push ${{ env.IMAGE_REGISTRY_URL }}/${{ github.repository }}/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}
+            docker build . -t ${{ env.IMAGE_REGISTRY_URL }}/board/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}
+            docker push ${{ env.IMAGE_REGISTRY_URL }}/board/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}
             
   Deploy-to-Azure:
     runs-on: ubuntu-latest
@@ -62,7 +62,7 @@ jobs:
         if: success()
         run: |
           az config set extension.use_dynamic_install=yes_without_prompt
-          az containerapp update -n ${{env.AZURE_CONTAINERAPPS_NAME}} -g ${{env.AZURE_RESOURCE_GROUP}} --image ${{env.IMAGE_REGISTRY_URL}}/${{ github.repository }}/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}
+          az containerapp update -n ${{env.AZURE_CONTAINERAPPS_NAME}} -g ${{env.AZURE_RESOURCE_GROUP}} --image ${{env.IMAGE_REGISTRY_URL}}/board/${{env.DOCKER_IMAGE_NAME}}:${{ github.sha }}
 
       - name: Azure logout
         run: |
