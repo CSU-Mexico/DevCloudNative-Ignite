@@ -6,10 +6,10 @@ on:
       - main
 
 env:
-  DOCKER_IMAGE_NAME: game-azure-build-demo
-  IMAGE_REGISTRY_URL: docker.pkg.github.com  
-  AZURE_CONTAINERAPPS_NAME: "game-app-staging"
-  AZURE_RESOURCE_GROUP: dev-journey-build-actions
+  DOCKER_IMAGE_NAME: whiteboard-demo
+  IMAGE_REGISTRY_URL: crignitedev2022.azurecr.io  
+  AZURE_CONTAINERAPPS_NAME: "whiteboard-pwa-ignite-2022"
+  AZURE_RESOURCE_GROUP: Ignite_DevTools
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -48,8 +48,8 @@ jobs:
       - uses: azure/docker-login@v1
         with:
           login-server: ${{env.IMAGE_REGISTRY_URL}}
-          username: ${{ secrets.GH_USER }}
-          password: ${{ secrets.GH_PAT }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PWD }}
 
       - name: Deploy containnerapp 
         if: success()
