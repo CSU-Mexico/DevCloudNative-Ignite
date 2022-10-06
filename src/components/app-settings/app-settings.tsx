@@ -34,7 +34,7 @@ export class AppSettings {
           <ion-item href="https://play.google.com/store/apps/details?id=org.webboard.app">
             <ion-icon slot="start" name="logo-android"></ion-icon>
             <ion-label>
-              Webboard for Android
+              Webboard para Android
             </ion-label>
           </ion-item>
 
@@ -42,7 +42,7 @@ export class AppSettings {
             <ion-icon slot="start" name="logo-windows"></ion-icon>
 
             <ion-label>
-              Webboard for Windows
+              Webboard para Windows
             </ion-label>
           </ion-item>
 
