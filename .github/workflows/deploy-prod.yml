@@ -44,6 +44,7 @@ jobs:
             
   Deploy-to-Azure:
     runs-on: ubuntu-latest
+    environment: 'prod'
     needs: Build-Docker-Image
     name: Deploy app container to Azure
     steps:
