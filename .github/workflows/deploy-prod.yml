@@ -13,7 +13,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    name: Build
     steps:
       - uses: actions/checkout@v1
       - name: npm install and build webpack
@@ -24,7 +24,7 @@ jobs:
   Build-Docker-Image:
     runs-on: ubuntu-latest
     needs: build
-    name: Build image and store in GitHub Packages
+    name: Build image and store in Azure Container Registry
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 'prod'
     needs: Build-Docker-Image
-    name: Deploy app container to Azure
+    name: Deploy app to Azure Container Apps
     steps:
       - name: "Login via Azure CLI"
         uses: azure/login@v1
