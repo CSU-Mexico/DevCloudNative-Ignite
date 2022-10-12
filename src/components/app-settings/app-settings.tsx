@@ -20,7 +20,7 @@ export class AppSettings {
           <ion-item href="https://github.com/jgw96/web-whiteboard">
             <ion-icon slot="start" name="information-circle-outline"></ion-icon>
             <ion-label>
-              About
+              Acerca de
             </ion-label>
           </ion-item>
 
