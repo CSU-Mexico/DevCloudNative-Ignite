@@ -27,7 +27,7 @@ export class AppSettings {
           <ion-item href="https://github.com/jgw96/web-whiteboard/issues">
             <ion-icon slot="start" name="happy"></ion-icon>
             <ion-label>
-              Send Feedback
+              Enviar retroalimentacion
             </ion-label>
           </ion-item>
 
