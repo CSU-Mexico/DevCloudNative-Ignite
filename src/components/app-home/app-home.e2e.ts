@@ -4,7 +4,8 @@ describe('app-home', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<app-home></app-home>');
-
+    //comentario demo
+      //
     const element = await page.find('app-home');
     expect(element).toHaveClass('hydrated');
   });
